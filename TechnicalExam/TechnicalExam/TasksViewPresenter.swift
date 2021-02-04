@@ -41,10 +41,10 @@ class TasksViewPresenter : TaskPresenter{
     }
     
     func deletedTask(taskId: Int) {
-        if var task = taskProvider.allTasks.first(where: { $0.id == taskId }) {
-            task.isDeleted = true
-        }
-        
+        guard let view = self.view else { return }
+        guard let task = taskProvider.allTasks.first(where: { $0.id == taskId }) else { return }
+        taskProvider.delete(taskId: taskId)
+        view.removeTaskFromList(task: task)
     }
     
     // MARK: Private Methods

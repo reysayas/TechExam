@@ -28,7 +28,14 @@ class TaskLocalServiceProvider : TaskLocalService {
         if let encoded = try? encoder.encode(allTasks){
             UserDefaults.standard.set(encoded, forKey: taskKey)
         }
-
+    }
+    
+    func delete(taskId:Int) {
+        let tasks = allTasks.filter({ $0.id == taskId })
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(tasks) {
+            UserDefaults.standard.set(encoded, forKey: taskKey)
+        }
     }
     
     func findAll() -> [Task] {

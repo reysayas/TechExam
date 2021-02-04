@@ -105,7 +105,8 @@ extension TasksViewController: TaskView {
     }
     
     func removeTaskFromList(task: Task) {
-        
+        self.tasks.removeAll(where: { $0.id == task.id })
+        self.tableView.reloadData()
     }
     
     func updateTaskInList(task: Task) {

@@ -13,5 +13,4 @@ struct Task : Codable{
     var id : Int = 0
     var description : String? = ""
     var completed:Bool = false
-    var isDeleted:Bool = false
 }

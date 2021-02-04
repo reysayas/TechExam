@@ -33,11 +33,19 @@ class TasksViewPresenter : TaskPresenter{
     }
     
     func checkedTask(taskId: Int) {
-        
+        guard let view = self.view else { return }
+        guard var task = taskProvider.allTasks.first(where: { $0.id == taskId }) else { return }
+        task.completed = true
+        taskProvider.update(task: task)
+        view.updateTaskInList(task: task)
     }
     
     func uncheckedTask(taskId: Int) {
-        
+        guard let view = self.view else { return }
+        guard var task = taskProvider.allTasks.first(where: { $0.id == taskId }) else { return }
+        task.completed = false
+        taskProvider.update(task: task)
+        view.updateTaskInList(task: task)
     }
     
     func deletedTask(taskId: Int) {

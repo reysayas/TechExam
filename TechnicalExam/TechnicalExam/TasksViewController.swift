@@ -110,13 +110,23 @@ extension TasksViewController: TaskView {
     }
     
     func updateTaskInList(task: Task) {
-        
+        guard let idx = self.tasks.firstIndex(where: { $0.id == task.id }) else { return }
+        self.tasks.remove(at: idx)
+        self.tasks.append(task)
+        self.tableView.reloadData()
     }
 }
 
 extension TasksViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let presenter = self.presenter else { return }
+        let task  = self.tasks[indexPath.row]
         
+        if task.completed {
+            presenter.uncheckedTask(taskId: task.id)
+        } else {
+            presenter.checkedTask(taskId: task.id)
+        }
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -144,7 +154,10 @@ extension TasksViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else { return UITableViewCell() }
-        cell.textLabel?.text = tasks[indexPath.row].description
+        let task = tasks[indexPath.row]
+        cell.textLabel?.text = task.completed ? "\(task.description ?? "") (completed)" : task.description
+        cell.textLabel?.textColor = task.completed ? .systemGreen : .black
+        cell.selectionStyle = .none
         return cell
     }
     

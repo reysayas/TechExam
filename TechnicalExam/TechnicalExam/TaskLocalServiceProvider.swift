@@ -38,6 +38,12 @@ class TaskLocalServiceProvider : TaskLocalService {
         }
     }
     
+    func update(task:Task) {
+        guard let idx = allTasks.firstIndex(where: { $0.id == task.id }) else { return }
+        allTasks.remove(at: idx)
+        save(task: task)
+    }
+    
     func findAll() -> [Task] {
         if let objects = defaults.value(forKey: taskKey) as? Data {
             let decoder = JSONDecoder()
